@@ -17,7 +17,6 @@ struct Ratings
     Ratings *next;
 };
 
-
 class Movie
 {
 private:
@@ -26,6 +25,9 @@ private:
     Ratings *headRatings;
 
 public:
+    // Constructs the movie ratings/comments based on given text file
+    // Inputs: string textFileName
+    // Outputs: none
     void build(string textFileName){
         char anotherReview = 'y';
         ifstream fin;
@@ -70,7 +72,7 @@ public:
 
     // Prints out the review information to the console
     // Inputs: none
-    // Returns: nont
+    // Returns: none
     void print(){
         float ave = average();
         int count = 1;
@@ -85,7 +87,6 @@ public:
 
             currentRatings = currentRatings->next;
             currentComments = currentComments->next;
-
             count++;
         }
         cout << "\t> Average: " << ave << endl;
@@ -100,6 +101,7 @@ public:
         float sum = 0;
         int count = 0;
 
+        // gets the average/count
         while(currentRatings->next){
             sum += currentRatings->value; 
             currentRatings = currentRatings->next;
@@ -107,14 +109,7 @@ public:
         }
         return sum/count;
     }   
-    ~Movie();
 };
-
-Movie::~Movie(){
-    headRatings->next;
-    headComment->next;
-}
-
 
 int main(int argc, char const *argv[]){
     const string txtfile = "comments.txt";
