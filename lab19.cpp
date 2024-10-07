@@ -5,25 +5,35 @@
 
 using namespace std;
 
+struct Comments
+{
+    string review;
+    Comments *next;
+};
+
+struct Ratings 
+{
+    float value;
+    Ratings *next;
+};
+
+
 class Movie
 {
 private:
     string title;
-    float rating;
-    string comments;
-    Movie *next;
+    Comments *headComment;
+    Ratings *headRatings;
+
 public:
-    Movie* build(string textFileName){
+    void build(string textFileName){
         char anotherReview = 'y';
         ifstream fin;
 
-        Movie* head = nullptr;
-        Movie* current = nullptr;
         fin.open(textFileName);
 
         if(!fin){
             cout << "File opening failure" << endl;
-            return nullptr;
         }
 
         time_t clock;
@@ -31,80 +41,80 @@ public:
 
         while (fin)
         {
-            Movie *temp = new Movie();
-            string comments;
+            Comments *tempComments = new Comments();
+            Ratings *tempRatings = new Ratings();
+
+            string comment;
             float rating;
 
-            getline(fin, comments);
+            getline(fin, comment);
 
             if(fin){
                 rating = (rand()%6);
 
-                // Creates our temporary movie object to be appended
-                temp->comments = comments;
-                temp->rating = rating;
-                temp->next = nullptr;
+                // Creates temp Review/Comment structs
+                tempComments->review = comment;
+                tempComments->next = nullptr;
+                tempRatings->value = rating;
+                tempRatings->next = nullptr;
+
 
                 // Checks whether to append to the end or the begining
                 // Checks if the head is empty
-                if(!head){
-                    head = temp;
-                    current = head;
-                }else{
-                    current->next = temp;
-                    current = current->next;
-                }
+                tempComments->next = headComment;
+                tempRatings->next = headRatings;
+                headComment = tempComments;
+                headRatings = tempRatings;
+
             }
         }
-
-        return head;
     }
 
-    void print(Movie* head){
-        float ave = average(head);
+    void print(){
+        float ave = average();
         int count = 1;
 
         // Prints review
-        while(head){
-            cout << "\t> Review #" << count << ": " << head->rating  << ": " << head->comments << endl;
-            head = head->next;
+        while(headRatings){
+
+            cout << "\t> Review #" << count << ": " << headRatings->value << ": " << headComment->review << endl;
+
+            headRatings = headRatings->next;
+            headComment = headComment->next;
             count++;
         }
         cout << "\t> Average: " << ave << endl;
     }
 
-    float average(Movie* head){
+    float average(){
         float sum = 0;
         int count = 0;
 
-        while(head){
-            sum += head->rating;
-            head = head->next;
+        while(headRatings){
+            sum += headRatings->value; 
+            headRatings = headRatings->next;
             count++;
         }
         return sum/count;
     }   
-    ~Movie();
+    //~Movie();
 };
 
-Movie::~Movie()
-{
+/*
+Movie::~Movie(){
+
 }
+*/
 
-
-// Function headers
-Movie* build();
-void print(Movie*);
-float average(Movie*);
-
-const string fileName = "comments.txt";
 
 int main(int argc, char const *argv[]){
+    const string txtfile = "comments.txt";
 
-    Movie *head = build();
-    print(head);
+    Movie movieList;
+
+    movieList.build(txtfile);
+    movieList.print();
 
     return 0;
 }
 
-// Builds a movie from use input
