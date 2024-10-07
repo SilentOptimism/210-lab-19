@@ -59,12 +59,14 @@ public:
                 tempRatings->next = nullptr;
 
 
+
                 // Checks whether to append to the end or the begining
                 // Checks if the head is empty
                 tempComments->next = headComment;
                 tempRatings->next = headRatings;
                 headComment = tempComments;
                 headRatings = tempRatings;
+
 
             }
         }
@@ -74,25 +76,31 @@ public:
         float ave = average();
         int count = 1;
 
+        Comments* currentComments = headComment;
+        Ratings* currentRatings = headRatings;
+
         // Prints review
         while(headRatings){
 
-            cout << "\t> Review #" << count << ": " << headRatings->value << ": " << headComment->review << endl;
+            cout << "\t> Review #" << count << ": " << currentRatings->value << ": " << currentComments->review << endl;
 
-            headRatings = headRatings->next;
-            headComment = headComment->next;
+            currentRatings = currentRatings->next;
+            currentComments = currentComments->next;
+
             count++;
         }
         cout << "\t> Average: " << ave << endl;
     }
 
     float average(){
+        Ratings* currentRatings = headRatings;
+
         float sum = 0;
         int count = 0;
 
-        while(headRatings){
-            sum += headRatings->value; 
-            headRatings = headRatings->next;
+        while(currentRatings){
+            sum += currentRatings->value; 
+            currentRatings = currentRatings->next;
             count++;
         }
         return sum/count;
@@ -102,7 +110,6 @@ public:
 
 /*
 Movie::~Movie(){
-
 }
 */
 
