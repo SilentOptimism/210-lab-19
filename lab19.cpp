@@ -58,20 +58,19 @@ public:
                 tempRatings->value = rating;
                 tempRatings->next = nullptr;
 
-
-
                 // Checks whether to append to the end or the begining
                 // Checks if the head is empty
                 tempComments->next = headComment;
                 tempRatings->next = headRatings;
                 headComment = tempComments;
                 headRatings = tempRatings;
-
-
             }
         }
     }
 
+    // Prints out the review information to the console
+    // Inputs: none
+    // Returns: nont
     void print(){
         float ave = average();
         int count = 1;
@@ -80,7 +79,7 @@ public:
         Ratings* currentRatings = headRatings;
 
         // Prints review
-        while(headRatings){
+        while(currentRatings->next){
 
             cout << "\t> Review #" << count << ": " << currentRatings->value << ": " << currentComments->review << endl;
 
@@ -92,26 +91,29 @@ public:
         cout << "\t> Average: " << ave << endl;
     }
 
+    // Calculates the average
+    // Inputs: none
+    // Returns: float
     float average(){
         Ratings* currentRatings = headRatings;
 
         float sum = 0;
         int count = 0;
 
-        while(currentRatings){
+        while(currentRatings->next){
             sum += currentRatings->value; 
             currentRatings = currentRatings->next;
             count++;
         }
         return sum/count;
     }   
-    //~Movie();
+    ~Movie();
 };
 
-/*
 Movie::~Movie(){
+    headRatings->next;
+    headComment->next;
 }
-*/
 
 
 int main(int argc, char const *argv[]){
