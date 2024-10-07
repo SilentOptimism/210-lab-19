@@ -54,29 +54,28 @@ Movie* build(){
 
         getline(fin, comments);
 
-        rating = (rand()%5);
-        
+        if(fin){
+            rating = (rand()%6);
 
-        // Creates our temporary movie object to be appended
-        temp->comments = comments;
-        temp->rating = rating;
-        temp->next = nullptr;
+            // Creates our temporary movie object to be appended
+            temp->comments = comments;
+            temp->rating = rating;
+            temp->next = nullptr;
 
-        // Checks whether to append to the end or the begining
-            // Checks if the head is empty
-        if(!head){
-            head = temp;
-            current = head;
-        }else{
-            current->next = temp;
-            current = current->next;
+            // Checks whether to append to the end or the begining
+                // Checks if the head is empty
+            if(!head){
+                head = temp;
+                current = head;
+            }else{
+                current->next = temp;
+                current = current->next;
+            }
         }
     }
 
     return head;
 }
-
-
 
 void print(Movie* head){
     float ave = average(head);
